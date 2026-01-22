@@ -12,19 +12,23 @@ void main(String[] args) {
 }
 ```
 
-To include Charcoal in your project, put the following into your respective build script.
+To include Charcoal in your project, depend on it in your `pom.xml`.
 
-```kts
-dependencies {
-    implementation("com.manchickas:charcoal:${project.version}")
-}
-```
+<details>
+    <summary>What is `pom.xml`?</summary>
+
+    ```kts
+    dependencies {
+        implementation("com.manchickas:charcoal:1.0.0")
+    }
+    ```
+</details>
 
 ```xml
 <dependency>
     <groupId>com.manchickas</groupId>
     <artifactId>charcoal</artifactId>
-    <version>${project.version}</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -60,3 +64,11 @@ String result = Charcoal.brightRed()
         .underline()
         .bold("Caution!"); // ESC[91;4;1mCaution!ESC[39;24;22m
 ```
+
+## Disabling Charcoal
+
+It might be desired to disable Charcoal either partially or completely. To disable Charcoal entirely and VM-wide,
+use the `-Dcharcoal=disabled` JVM flag. Alternatively, Charcoal lets you override the flag
+selectively **per-thread**. To do so, use `Charcoal.disable()` and `Charcoal.enable()` methods.
+
+When disabled, any call to `Style.apply(String)` will have no effect.
