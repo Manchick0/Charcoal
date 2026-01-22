@@ -12,17 +12,13 @@ void main(String[] args) {
 }
 ```
 
-To include Charcoal in your project, depend on it in your `pom.xml`.
+To include Charcoal in your project, depend on it in your `build.gradle`/`pom.xml`.
 
-<details>
-    <summary>What is `pom.xml`?</summary>
-
-    ```kts
-    dependencies {
-        implementation("com.manchickas:charcoal:1.0.0")
-    }
-    ```
-</details>
+```kts
+dependencies {
+    implementation("com.manchickas:charcoal:1.0.0")
+}
+```
 
 ```xml
 <dependency>
