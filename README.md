@@ -8,7 +8,7 @@ to build a final result:
 
 ```java
 void main(String[] args) {
-    IO.println(Charcoal.brightRed().bold("Hello, world!"));
+    IO.println(Charcoal.brightRed().bold("Hello, Marie!"));
 }
 ```
 
