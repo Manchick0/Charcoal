@@ -1,20 +1,20 @@
 package com.manchickas.charcoal;
 
 import com.manchickas.Charcoal;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.*;
 
 import java.util.Objects;
 
 public final class Style {
 
     private static final char ESCAPE = '\033';
-    private static final byte NO_ADDITIONAL = 0;
     public static final byte[] BOLD = new byte[] { 1, 22 };
+    public static final byte[] DIM = new byte[] { 2, 22 };
     public static final byte[] ITALIC = new byte[] { 3, 23 };
     public static final byte[] UNDERLINE = new byte[] { 4, 24 };
+    public static final byte[] BLINK = new byte[] { 5, 25 };
+    public static final byte[] RAPID_BLINK = new byte[] { 6, 25 };
+    public static final byte[] STRIKE_THROUGH = new byte[] { 9, 29 };
     // Color names as defined by https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit
     public static final byte[] BLACK = new byte[] { 30, 39 };
     public static final byte[] RED = new byte[] { 31, 39 };
@@ -50,334 +50,422 @@ public final class Style {
     public static final byte[] MAGENTA_BRIGHT_BG = new byte[] { 105, 49 };
     public static final byte[] CYAN_BRIGHT_BG = new byte[] { 106, 49 };
     public static final byte[] WHITE_BRIGHT_BG = new byte[] { 107, 49 };
+    public static final byte[] FOREGROUND_COLOR = new byte[] { 38, 39 };
+    public static final byte[] BACKGROUND_COLOR = new byte[] { 48, 49 };
 
     private final @Nullable Style parent;
     private final byte @NotNull[] sequence;
-    private final int depth;
+    private final int @NotNull[] payload;
 
-    @ApiStatus.Internal
     public Style(@Nullable Style parent,
-                  byte @NotNull[] sequence) {
-        if (sequence.length != 2)
-            throw new AssertionError();
+                 byte @NotNull[] sequence,
+                 int @NotNull[] payload) {
         this.parent = parent;
-        this.sequence = Objects.requireNonNull(sequence);
-        this.depth = parent == null ? 1 : parent.depth + 1;
+        this.sequence = sequence;
+        this.payload = payload;
     }
 
     public @NotNull Style bold() {
-        return new Style(this, Style.BOLD);
+        return new Style(this, Style.BOLD, new int[0]);
     }
 
     public @NotNull String bold(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BOLD);
+        return this.applyWithAdditional(content, Style.BOLD, new int[0]);
+    }
+
+    public @NotNull Style dim() {
+        return new Style(this, Style.DIM, new int[0]);
+    }
+
+    public @NotNull String dim(@NotNull String content) {
+        Objects.requireNonNull(content);
+        return this.applyWithAdditional(content, Style.DIM, new int[0]);
     }
 
     public @NotNull Style italic() {
-        return new Style(this, Style.ITALIC);
+        return new Style(this, Style.ITALIC, new int[0]);
     }
 
     public @NotNull String italic(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.ITALIC);
+        return this.applyWithAdditional(content, Style.ITALIC, new int[0]);
     }
 
     public @NotNull Style underline() {
-        return new Style(this, Style.UNDERLINE);
+        return new Style(this, Style.UNDERLINE, new int[0]);
     }
 
     public @NotNull String underline(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.UNDERLINE);
+        return this.applyWithAdditional(content, Style.UNDERLINE, new int[0]);
+    }
+
+    public @NotNull Style blinking() {
+        return new Style(this, Style.BLINK, new int[0]);
+    }
+
+    public @NotNull String blinking(@NotNull String content) {
+        Objects.requireNonNull(content);
+        return this.applyWithAdditional(content, Style.BLINK, new int[0]);
+    }
+
+    public @NotNull Style blinkingRapidly() {
+        return new Style(this, Style.RAPID_BLINK, new int[0]);
+    }
+
+    public @NotNull String blinkingRapidly(@NotNull String content) {
+        Objects.requireNonNull(content);
+        return this.applyWithAdditional(content, Style.RAPID_BLINK, new int[0]);
+    }
+
+    public @NotNull Style strikeThrough() {
+        return new Style(this, Style.STRIKE_THROUGH, new int[0]);
+    }
+
+    public @NotNull String strikeThrough(@NotNull String content) {
+        Objects.requireNonNull(content);
+        return this.applyWithAdditional(content, Style.STRIKE_THROUGH, new int[0]);
     }
 
     public @NotNull Style black() {
-        return new Style(this, Style.BLACK);
+        return new Style(this, Style.BLACK, new int[0]);
     }
 
     public @NotNull String black(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLACK);
+        return this.applyWithAdditional(content, Style.BLACK, new int[0]);
     }
 
     public @NotNull Style red() {
-        return new Style(this, Style.RED);
+        return new Style(this, Style.RED, new int[0]);
     }
 
     public @NotNull String red(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.RED);
+        return this.applyWithAdditional(content, Style.RED, new int[0]);
     }
 
     public @NotNull Style green() {
-        return new Style(this, Style.GREEN);
+        return new Style(this, Style.GREEN, new int[0]);
     }
 
     public @NotNull String green(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.GREEN);
+        return this.applyWithAdditional(content, Style.GREEN, new int[0]);
     }
 
     public @NotNull Style yellow() {
-        return new Style(this, Style.YELLOW);
+        return new Style(this, Style.YELLOW, new int[0]);
     }
 
     public @NotNull String yellow(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.YELLOW);
+        return this.applyWithAdditional(content, Style.YELLOW, new int[0]);
     }
 
     public @NotNull Style blue() {
-        return new Style(this, Style.BLUE);
+        return new Style(this, Style.BLUE, new int[0]);
     }
 
     public @NotNull String blue(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLUE);
+        return this.applyWithAdditional(content, Style.BLUE, new int[0]);
     }
 
     public @NotNull Style magenta() {
-        return new Style(this, Style.MAGENTA);
+        return new Style(this, Style.MAGENTA, new int[0]);
     }
 
     public @NotNull String magenta(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.MAGENTA);
+        return this.applyWithAdditional(content, Style.MAGENTA, new int[0]);
     }
 
     public @NotNull Style cyan() {
-        return new Style(this, Style.CYAN);
+        return new Style(this, Style.CYAN, new int[0]);
     }
 
     public @NotNull String cyan(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.CYAN);
+        return this.applyWithAdditional(content, Style.CYAN, new int[0]);
     }
 
     public @NotNull Style white() {
-        return new Style(this, Style.WHITE);
+        return new Style(this, Style.WHITE, new int[0]);
     }
 
     public @NotNull String white(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.WHITE);
+        return this.applyWithAdditional(content, Style.WHITE, new int[0]);
     }
 
     public @NotNull Style brightBlack() {
-        return new Style(this, Style.BLACK_BRIGHT);
+        return new Style(this, Style.BLACK_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightBlack(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLACK_BRIGHT);
+        return this.applyWithAdditional(content, Style.BLACK_BRIGHT, new int[0]);
     }
 
     public @NotNull Style brightRed() {
-        return new Style(this, Style.RED_BRIGHT);
+        return new Style(this, Style.RED_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightRed(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.RED_BRIGHT);
+        return this.applyWithAdditional(content, Style.RED_BRIGHT, new int[0]);
     }
 
     public @NotNull Style brightGreen() {
-        return new Style(this, Style.GREEN_BRIGHT);
+        return new Style(this, Style.GREEN_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightGreen(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.GREEN_BRIGHT);
+        return this.applyWithAdditional(content, Style.GREEN_BRIGHT, new int[0]);
     }
 
     public @NotNull Style brightYellow() {
-        return new Style(this, Style.YELLOW_BRIGHT);
+        return new Style(this, Style.YELLOW_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightYellow(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.YELLOW_BRIGHT);
+        return this.applyWithAdditional(content, Style.YELLOW_BRIGHT, new int[0]);
     }
 
     public @NotNull Style brightBlue() {
-        return new Style(this, Style.BLUE_BRIGHT);
+        return new Style(this, Style.BLUE_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightBlue(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLUE_BRIGHT);
+        return this.applyWithAdditional(content, Style.BLUE_BRIGHT, new int[0]);
     }
 
     public @NotNull Style brightMagenta() {
-        return new Style(this, Style.MAGENTA_BRIGHT);
+        return new Style(this, Style.MAGENTA_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightMagenta(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.MAGENTA_BRIGHT);
+        return this.applyWithAdditional(content, Style.MAGENTA_BRIGHT, new int[0]);
     }
 
     public @NotNull Style brightCyan() {
-        return new Style(this, Style.CYAN_BRIGHT);
+        return new Style(this, Style.CYAN_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightCyan(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.CYAN_BRIGHT);
+        return this.applyWithAdditional(content, Style.CYAN_BRIGHT, new int[0]);
     }
 
     public @NotNull Style brightWhite() {
-        return new Style(this, Style.WHITE_BRIGHT);
+        return new Style(this, Style.WHITE_BRIGHT, new int[0]);
     }
 
     public @NotNull String brightWhite(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.WHITE_BRIGHT);
+        return this.applyWithAdditional(content, Style.WHITE_BRIGHT, new int[0]);
     }
 
     public @NotNull Style blackBg() {
-        return new Style(this, Style.BLACK_BG);
+        return new Style(this, Style.BLACK_BG, new int[0]);
     }
 
     public @NotNull String blackBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLACK_BG);
+        return this.applyWithAdditional(content, Style.BLACK_BG, new int[0]);
     }
 
     public @NotNull Style redBg() {
-        return new Style(this, Style.RED_BG);
+        return new Style(this, Style.RED_BG, new int[0]);
     }
 
     public @NotNull String redBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.RED_BG);
+        return this.applyWithAdditional(content, Style.RED_BG, new int[0]);
     }
 
     public @NotNull Style greenBg() {
-        return new Style(this, Style.GREEN_BG);
+        return new Style(this, Style.GREEN_BG, new int[0]);
     }
 
     public @NotNull String greenBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.GREEN_BG);
+        return this.applyWithAdditional(content, Style.GREEN_BG, new int[0]);
     }
 
     public @NotNull Style yellowBg() {
-        return new Style(this, Style.YELLOW_BG);
+        return new Style(this, Style.YELLOW_BG, new int[0]);
     }
 
     public @NotNull String yellowBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.YELLOW_BG);
+        return this.applyWithAdditional(content, Style.YELLOW_BG, new int[0]);
     }
 
     public @NotNull Style blueBg() {
-        return new Style(this, Style.BLUE_BG);
+        return new Style(this, Style.BLUE_BG, new int[0]);
     }
 
     public @NotNull String blueBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLUE_BG);
+        return this.applyWithAdditional(content, Style.BLUE_BG, new int[0]);
     }
 
     public @NotNull Style magentaBg() {
-        return new Style(this, Style.MAGENTA_BG);
+        return new Style(this, Style.MAGENTA_BG, new int[0]);
     }
 
     public @NotNull String magentaBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.MAGENTA_BG);
+        return this.applyWithAdditional(content, Style.MAGENTA_BG, new int[0]);
     }
 
     public @NotNull Style cyanBg() {
-        return new Style(this, Style.CYAN_BG);
+        return new Style(this, Style.CYAN_BG, new int[0]);
     }
 
     public @NotNull String cyanBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.CYAN_BG);
+        return this.applyWithAdditional(content, Style.CYAN_BG, new int[0]);
     }
 
     public @NotNull Style whiteBg() {
-        return new Style(this, Style.WHITE_BG);
+        return new Style(this, Style.WHITE_BG, new int[0]);
     }
 
     public @NotNull String whiteBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.WHITE_BG);
+        return this.applyWithAdditional(content, Style.WHITE_BG, new int[0]);
     }
 
     public @NotNull Style brightBlackBg() {
-        return new Style(this, Style.BLACK_BRIGHT_BG);
+        return new Style(this, Style.BLACK_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightBlackBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLACK_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.BLACK_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull Style brightRedBg() {
-        return new Style(this, Style.RED_BRIGHT_BG);
+        return new Style(this, Style.RED_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightRedBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.RED_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.RED_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull Style brightGreenBg() {
-        return new Style(this, Style.GREEN_BRIGHT_BG);
+        return new Style(this, Style.GREEN_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightGreenBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.GREEN_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.GREEN_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull Style brightYellowBg() {
-        return new Style(this, Style.YELLOW_BRIGHT_BG);
+        return new Style(this, Style.YELLOW_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightYellowBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.YELLOW_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.YELLOW_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull Style brightBlueBg() {
-        return new Style(this, Style.BLUE_BRIGHT_BG);
+        return new Style(this, Style.BLUE_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightBlueBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.BLUE_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.BLUE_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull Style brightMagentaBg() {
-        return new Style(this, Style.MAGENTA_BRIGHT_BG);
+        return new Style(this, Style.MAGENTA_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightMagentaBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.MAGENTA_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.MAGENTA_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull Style brightCyanBg() {
-        return new Style(this, Style.CYAN_BRIGHT_BG);
+        return new Style(this, Style.CYAN_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightCyanBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.CYAN_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.CYAN_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull Style brightWhiteBg() {
-        return new Style(this, Style.WHITE_BRIGHT_BG);
+        return new Style(this, Style.WHITE_BRIGHT_BG, new int[0]);
     }
 
     public @NotNull String brightWhiteBg(@NotNull String content) {
         Objects.requireNonNull(content);
-        return this.applyWithAdditional(content, Style.WHITE_BRIGHT_BG);
+        return this.applyWithAdditional(content, Style.WHITE_BRIGHT_BG, new int[0]);
+    }
+
+    @SuppressWarnings("ConstantValue")
+    public @NotNull Style color(@Range(from = 0, to = 0xFFFFFF) int color) {
+        if (color < 0 || color > 0xFFFFFF)
+            throw new IllegalArgumentException("Attempted to create a color() Style with color '%x'".formatted(color));
+        return new Style(this, Style.FOREGROUND_COLOR, new int[] {
+                2,
+                (color >> 16) & 0xFF,
+                (color >> 8) & 0xFF,
+                color & 0xFF
+        });
+    }
+
+    @SuppressWarnings("ConstantValue")
+    public @NotNull String color(@Range(from = 0, to = 0xFFFFFF) int color,
+                                 @NotNull String content) {
+        if (color < 0 || color > 0xFFFFFF)
+            throw new IllegalArgumentException("Attempted to create a color() Style with color '%x'".formatted(color));
+        Objects.requireNonNull(content);
+        return this.applyWithAdditional(content, Style.FOREGROUND_COLOR, new int[] {
+                2,
+                (color >> 16) & 0xFF,
+                (color >> 8) & 0xFF,
+                color & 0xFF
+        });
+    }
+
+    @SuppressWarnings("ConstantValue")
+    public @NotNull Style background(@Range(from = 0, to = 0xFFFFFF) int color) {
+        if (color < 0 || color > 0xFFFFFF)
+            throw new IllegalArgumentException("Attempted to create a bgColor() Style with color '%x'".formatted(color));
+        return new Style(this, Style.BACKGROUND_COLOR, new int[] {
+                2,
+                (color >> 16) & 0xFF,
+                (color >> 8) & 0xFF,
+                color & 0xFF
+        });
+    }
+
+    @SuppressWarnings("ConstantValue")
+    public @NotNull String background(@Range(from = 0, to = 0xFFFFFF) int color,
+                                      @NotNull String content) {
+        if (color < 0 || color > 0xFFFFFF)
+            throw new IllegalArgumentException("Attempted to create a bgColor() Style with color '%x'".formatted(color));
+        Objects.requireNonNull(content);
+        return this.applyWithAdditional(content, Style.BACKGROUND_COLOR, new int[] {
+                2,
+                (color >> 16) & 0xFF,
+                (color >> 8) & 0xFF,
+                color & 0xFF
+        });
     }
 
     /// Applies the `Style` to the provided `content`.
@@ -397,21 +485,43 @@ public final class Style {
     public @NotNull String apply(@NotNull String content) {
         Objects.requireNonNull(content);
         if (Charcoal.isEnabled()) {
-            var buffer = this.writeBeginSequence(new StringBuilder(), Style.NO_ADDITIONAL);
-            buffer.append(content);
-            return this.writeEndSequence(buffer, Style.NO_ADDITIONAL).toString();
+            var buffer = new StringBuilder();
+            buffer.append(ESCAPE)
+                    .append('[');
+            this.appendBegin(buffer)
+                    .append('m')
+                    .append(content)
+                    .append(ESCAPE)
+                    .append('[');
+            return this.appendEnd(buffer)
+                    .append('m')
+                    .toString();
         }
         return content;
     }
 
     @ApiStatus.Internal
     private @NotNull String applyWithAdditional(@NotNull String content,
-                                                byte @NotNull[] sequence) {
+                                                byte @NotNull[] sequence,
+                                                int @NotNull[] data) {
         if (Charcoal.isEnabled()) {
-            var buffer = this.writeBeginSequence(new StringBuilder(), sequence[0]);
-            buffer.append(content);
-            this.writeEndSequence(buffer, sequence[1]);
-            return buffer.toString();
+            var buffer = new StringBuilder();
+            buffer.append(ESCAPE)
+                    .append('[');
+            this.appendBegin(buffer)
+                    .append(';')
+                    .append(sequence[0]);
+            for (var datum : data)
+                buffer.append(';').append(datum);
+            buffer.append('m')
+                    .append(content)
+                    .append(ESCAPE)
+                    .append('[');
+            return this.appendEnd(buffer)
+                    .append(';')
+                    .append(sequence[1])
+                    .append('m')
+                    .toString();
         }
         return content;
     }
@@ -429,29 +539,24 @@ public final class Style {
     /// ```
     @Contract(pure = true)
     public @NotNull String beginSequence() {
-        return this.writeBeginSequence(
-                new StringBuilder(),
-                Style.NO_ADDITIONAL
-        ).toString();
+        var buffer = new StringBuilder();
+        buffer.append(ESCAPE)
+                .append('[');
+        return this.appendBegin(buffer)
+                .append('m')
+                .toString();
     }
 
     @ApiStatus.Internal
-    @Contract("_, _ -> param1")
-    private @NotNull StringBuilder writeBeginSequence(@NotNull StringBuilder buffer, byte additional) {
-        buffer.append(Style.ESCAPE)
-                .append('[');
-        var style = this;
-        var codes = new byte[additional != Style.NO_ADDITIONAL ? this.depth + 1 : this.depth];
-        if (additional != Style.NO_ADDITIONAL)
-            codes[this.depth] = additional;
-        for (var i = this.depth - 1; style != null; i--, style = style.parent)
-            codes[i] = style.sequence[0];
-        for (var i = 0; i < codes.length; i++) {
-            if (i > 0)
-                buffer.append(';');
-            buffer.append(codes[i]);
+    private @NotNull StringBuilder appendBegin(@NotNull StringBuilder buffer) {
+        if (this.parent != null) {
+            this.parent.appendBegin(buffer);
+            buffer.append(';');
         }
-        buffer.append('m');
+        buffer.append(this.sequence[0]);
+        for (var datum : this.payload)
+            buffer.append(';')
+                  .append(datum);
         return buffer;
     }
 
@@ -468,29 +573,26 @@ public final class Style {
     /// ```
     @Contract(pure = true)
     public @NotNull String endSequence() {
-        return this.writeEndSequence(
-                new StringBuilder(),
-                Style.NO_ADDITIONAL
-        ).toString();
+        var buffer = new StringBuilder();
+        buffer.append(ESCAPE)
+                .append('[');
+        return this.appendEnd(buffer)
+                .append('m')
+                .toString();
     }
 
     @ApiStatus.Internal
-    @Contract("_, _ -> param1")
-    public @NotNull StringBuilder writeEndSequence(@NotNull StringBuilder buffer, byte additional) {
-        buffer.append(Style.ESCAPE)
-              .append('[');
-        var style = this;
-        var codes = new byte[additional != Style.NO_ADDITIONAL ? this.depth + 1 : this.depth];
-        if (additional != Style.NO_ADDITIONAL)
-            codes[this.depth] = additional;
-        for (var i = this.depth - 1; style != null; i--, style = style.parent)
-            codes[i] = style.sequence[1];
-        for (var i = 0; i < codes.length; i++) {
-            if (i > 0)
-                buffer.append(';');
-            buffer.append(codes[i]);
+    private @NotNull StringBuilder appendEnd(@NotNull StringBuilder buffer) {
+        if (this.parent != null) {
+            this.parent.appendEnd(buffer);
+            buffer.append(';');
         }
-        buffer.append('m');
+        buffer.append(this.sequence[1]);
         return buffer;
+    }
+
+    @Override
+    public String toString() {
+        return this.apply("...");
     }
 }

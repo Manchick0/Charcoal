@@ -10,7 +10,7 @@
 
     <groupId>com.manchickas</groupId>
     <artifactId>charcoal</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 
     <developers>
         <developer>
@@ -101,6 +101,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <mainClass>com.manchickas.Charcoal</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

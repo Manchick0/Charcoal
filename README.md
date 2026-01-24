@@ -56,9 +56,9 @@ overloads for all of its composition methods that accept a `String` directly. Th
 let you save yourself an `apply()` call:
 
 ```java
-String result = Charcoal.brightRed()
+String result = Charcoal.color(0x708090)
         .underline()
-        .bold("Caution!"); // ESC[91;4;1mCaution!ESC[39;24;22m
+        .bold("How convenient!"); // ESC[38;2;112;128;144;4;1mCaution!ESC[39;24;22m
 ```
 
 ## Disabling Charcoal
@@ -67,4 +67,12 @@ It might be desired to disable Charcoal either partially or completely. To disab
 use the `-Dcharcoal=disabled` JVM flag. Alternatively, Charcoal lets you override the flag
 selectively **per-thread**. To do so, use `Charcoal.disable()` and `Charcoal.enable()` methods.
 
-When disabled, any call to `Style.apply(String)` will have no effect.
+When disabled, any call to `Style.apply(String)` will have no effect:
+
+```java
+Charcoal.disable();
+System.out.println(Charcoal.brightRed("Caution... well, not really.")); // Caution... well, not really.
+CompletableFuture.runAsync(() -> {
+    System.out.println(Charcoal.brightRed("Caution!")); // ESC[91mCaution!ESC[39m
+}).join();
+```
