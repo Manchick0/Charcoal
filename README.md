@@ -16,7 +16,7 @@ To include Charcoal in your project, depend on it in your `build.gradle`/`pom.xm
 
 ```kts
 dependencies {
-    implementation("com.manchickas:charcoal:1.0.0")
+    implementation("com.manchickas:charcoal:1.1.0")
 }
 ```
 
@@ -24,7 +24,7 @@ dependencies {
 <dependency>
     <groupId>com.manchickas</groupId>
     <artifactId>charcoal</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 
