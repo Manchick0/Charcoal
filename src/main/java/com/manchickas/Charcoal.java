@@ -12,49 +12,54 @@ public abstract class Charcoal {
     private static final boolean ENABLED_GLOBALLY = Charcoal.readEnabled();
     private static final ThreadLocal<Boolean> ENABLED = ThreadLocal.withInitial(() -> Charcoal.ENABLED_GLOBALLY);
 
-    private static final Style BOLD              = new Style(null, Style.BOLD, new int[0]);
-    private static final Style DIM               = new Style(null, Style.DIM, new int[0]);
-    private static final Style ITALIC            = new Style(null, Style.ITALIC, new int[0]);
-    private static final Style UNDERLINE         = new Style(null, Style.UNDERLINE, new int[0]);
-    private static final Style BLINK             = new Style(null, Style.BLINK, new int[0]);
-    private static final Style RAPID_BLINK       = new Style(null, Style.RAPID_BLINK, new int[0]);
-    private static final Style STRIKE_THROUGH    = new Style(null, Style.STRIKE_THROUGH, new int[0]);
-    private static final Style BLACK             = new Style(null, Style.BLACK, new int[0]);
-    private static final Style RED               = new Style(null, Style.RED, new int[0]);
-    private static final Style GREEN             = new Style(null, Style.GREEN, new int[0]);
-    private static final Style YELLOW            = new Style(null, Style.YELLOW, new int[0]);
-    private static final Style BLUE              = new Style(null, Style.BLUE, new int[0]);
-    private static final Style MAGENTA           = new Style(null, Style.MAGENTA, new int[0]);
-    private static final Style CYAN              = new Style(null, Style.CYAN, new int[0]);
-    private static final Style WHITE             = new Style(null, Style.WHITE, new int[0]);
-    private static final Style BLACK_BRIGHT      = new Style(null, Style.BLACK_BRIGHT, new int[0]);
-    private static final Style RED_BRIGHT        = new Style(null, Style.RED_BRIGHT, new int[0]);
-    private static final Style GREEN_BRIGHT      = new Style(null, Style.GREEN_BRIGHT, new int[0]);
-    private static final Style YELLOW_BRIGHT     = new Style(null, Style.YELLOW_BRIGHT, new int[0]);
-    private static final Style BLUE_BRIGHT       = new Style(null, Style.BLUE_BRIGHT, new int[0]);
-    private static final Style MAGENTA_BRIGHT    = new Style(null, Style.MAGENTA_BRIGHT, new int[0]);
-    private static final Style CYAN_BRIGHT       = new Style(null, Style.CYAN_BRIGHT, new int[0]);
-    private static final Style WHITE_BRIGHT      = new Style(null, Style.WHITE_BRIGHT, new int[0]);
-    private static final Style BLACK_BG          = new Style(null, Style.BLACK_BG, new int[0]);
-    private static final Style RED_BG            = new Style(null, Style.RED_BG, new int[0]);
-    private static final Style GREEN_BG          = new Style(null, Style.GREEN_BG, new int[0]);
-    private static final Style YELLOW_BG         = new Style(null, Style.YELLOW_BG, new int[0]);
-    private static final Style BLUE_BG           = new Style(null, Style.BLUE_BG, new int[0]);
-    private static final Style MAGENTA_BG        = new Style(null, Style.MAGENTA_BG, new int[0]);
-    private static final Style CYAN_BG           = new Style(null, Style.CYAN_BG, new int[0]);
-    private static final Style WHITE_BG          = new Style(null, Style.WHITE_BG, new int[0]);
-    private static final Style BLACK_BRIGHT_BG   = new Style(null, Style.BLACK_BRIGHT_BG, new int[0]);
-    private static final Style RED_BRIGHT_BG     = new Style(null, Style.RED_BRIGHT_BG, new int[0]);
-    private static final Style GREEN_BRIGHT_BG   = new Style(null, Style.GREEN_BRIGHT_BG, new int[0]);
-    private static final Style YELLOW_BRIGHT_BG  = new Style(null, Style.YELLOW_BRIGHT_BG, new int[0]);
-    private static final Style BLUE_BRIGHT_BG    = new Style(null, Style.BLUE_BRIGHT_BG, new int[0]);
-    private static final Style MAGENTA_BRIGHT_BG = new Style(null, Style.MAGENTA_BRIGHT_BG, new int[0]);
-    private static final Style CYAN_BRIGHT_BG    = new Style(null, Style.CYAN_BRIGHT_BG, new int[0]);
-    private static final Style WHITE_BRIGHT_BG   = new Style(null, Style.WHITE_BRIGHT_BG, new int[0]);
+    private static final Style EMPTY             = new Style.Empty(null);
+    private static final Style BOLD              = new Style.Fixed(null, Style.BOLD);
+    private static final Style DIM               = new Style.Fixed(null, Style.DIM);
+    private static final Style ITALIC            = new Style.Fixed(null, Style.ITALIC);
+    private static final Style UNDERLINE         = new Style.Fixed(null, Style.UNDERLINE);
+    private static final Style BLINK             = new Style.Fixed(null, Style.BLINK);
+    private static final Style RAPID_BLINK       = new Style.Fixed(null, Style.RAPID_BLINK);
+    private static final Style STRIKE_THROUGH    = new Style.Fixed(null, Style.STRIKE_THROUGH);
+    private static final Style BLACK             = new Style.Fixed(null, Style.BLACK);
+    private static final Style RED               = new Style.Fixed(null, Style.RED);
+    private static final Style GREEN             = new Style.Fixed(null, Style.GREEN);
+    private static final Style YELLOW            = new Style.Fixed(null, Style.YELLOW);
+    private static final Style BLUE              = new Style.Fixed(null, Style.BLUE);
+    private static final Style MAGENTA           = new Style.Fixed(null, Style.MAGENTA);
+    private static final Style CYAN              = new Style.Fixed(null, Style.CYAN);
+    private static final Style WHITE             = new Style.Fixed(null, Style.WHITE);
+    private static final Style BLACK_BRIGHT      = new Style.Fixed(null, Style.BLACK_BRIGHT);
+    private static final Style RED_BRIGHT        = new Style.Fixed(null, Style.RED_BRIGHT);
+    private static final Style GREEN_BRIGHT      = new Style.Fixed(null, Style.GREEN_BRIGHT);
+    private static final Style YELLOW_BRIGHT     = new Style.Fixed(null, Style.YELLOW_BRIGHT);
+    private static final Style BLUE_BRIGHT       = new Style.Fixed(null, Style.BLUE_BRIGHT);
+    private static final Style MAGENTA_BRIGHT    = new Style.Fixed(null, Style.MAGENTA_BRIGHT);
+    private static final Style CYAN_BRIGHT       = new Style.Fixed(null, Style.CYAN_BRIGHT);
+    private static final Style WHITE_BRIGHT      = new Style.Fixed(null, Style.WHITE_BRIGHT);
+    private static final Style BLACK_BG          = new Style.Fixed(null, Style.BLACK_BG);
+    private static final Style RED_BG            = new Style.Fixed(null, Style.RED_BG);
+    private static final Style GREEN_BG          = new Style.Fixed(null, Style.GREEN_BG);
+    private static final Style YELLOW_BG         = new Style.Fixed(null, Style.YELLOW_BG);
+    private static final Style BLUE_BG           = new Style.Fixed(null, Style.BLUE_BG);
+    private static final Style MAGENTA_BG        = new Style.Fixed(null, Style.MAGENTA_BG);
+    private static final Style CYAN_BG           = new Style.Fixed(null, Style.CYAN_BG);
+    private static final Style WHITE_BG          = new Style.Fixed(null, Style.WHITE_BG);
+    private static final Style BLACK_BRIGHT_BG   = new Style.Fixed(null, Style.BLACK_BRIGHT_BG);
+    private static final Style RED_BRIGHT_BG     = new Style.Fixed(null, Style.RED_BRIGHT_BG);
+    private static final Style GREEN_BRIGHT_BG   = new Style.Fixed(null, Style.GREEN_BRIGHT_BG);
+    private static final Style YELLOW_BRIGHT_BG  = new Style.Fixed(null, Style.YELLOW_BRIGHT_BG);
+    private static final Style BLUE_BRIGHT_BG    = new Style.Fixed(null, Style.BLUE_BRIGHT_BG);
+    private static final Style MAGENTA_BRIGHT_BG = new Style.Fixed(null, Style.MAGENTA_BRIGHT_BG);
+    private static final Style CYAN_BRIGHT_BG    = new Style.Fixed(null, Style.CYAN_BRIGHT_BG);
+    private static final Style WHITE_BRIGHT_BG   = new Style.Fixed(null, Style.WHITE_BRIGHT_BG);
 
     // abstract class; private constructor
     private Charcoal() {
         throw new UnsupportedOperationException();
+    }
+
+    public static @NotNull Style empty() {
+        return Charcoal.EMPTY;
     }
 
     public static @NotNull Style bold() {
@@ -409,36 +414,34 @@ public abstract class Charcoal {
         return Charcoal.WHITE_BRIGHT_BG.apply(content);
     }
 
-    public static @NotNull Style color(@Range(from = 0, to = 0xFFFFFF) int color) {
-        return new Style(null, Style.FOREGROUND_COLOR, new int[]{
-                2,
-                (color >> 16) & 0xFF,
-                (color >> 8) & 0xFF,
-                color & 0xFF
-        });
+    public static @NotNull Style foreground(@Range(from = 0, to = 0xFFFFFF) int color) {
+        return new Style.Truecolor.Foreground(null, Charcoal.splitColor(color));
     }
 
     public static @NotNull String color(@Range(from = 0, to = 0xFFFFFF) int color,
-                                       @NotNull String content) {
+                                        @NotNull String content) {
         Objects.requireNonNull(content);
-        return Charcoal.color(color)
+        return new Style.Truecolor.Foreground(null, Charcoal.splitColor(color))
                 .apply(content);
     }
 
     public static @NotNull Style background(@Range(from = 0, to = 0xFFFFFF) int color) {
-        return new Style(null, Style.BACKGROUND_COLOR, new int[]{
-                2,
-                (color >> 16) & 0xFF,
-                (color >> 8) & 0xFF,
-                color & 0xFF
-        });
+        return new Style.Truecolor.Background(null, Charcoal.splitColor(color));
     }
 
     public static @NotNull String background(@Range(from = 0, to = 0xFFFFFF) int color,
                                              @NotNull String content) {
         Objects.requireNonNull(content);
-        return Charcoal.background(color)
+        return new Style.Truecolor.Background(null, Charcoal.splitColor(color))
                 .apply(content);
+    }
+
+    public static int @NotNull[] splitColor(@Range(from = 0, to = 0xFFFFFF) int color) {
+        return new int[] {
+                (color >> 16) & 0xFF,
+                (color >> 8) & 0xFF,
+                color & 0xFF
+        };
     }
 
     /// Enables Charcoal on the current thread.

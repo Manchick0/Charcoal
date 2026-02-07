@@ -8,7 +8,7 @@ to build a final result:
 
 ```java
 void main(String[] args) {
-    IO.println(Charcoal.brightRed().bold("Hello, Marie!"));
+    IO.println(Charcoal.brightYellow().bold("Hello, Marie!"));
 }
 ```
 
@@ -16,7 +16,7 @@ To include Charcoal in your project, depend on it in your `build.gradle`/`pom.xm
 
 ```kts
 dependencies {
-    implementation("com.manchickas:charcoal:1.1.0")
+    implementation("com.manchickas:charcoal:2.0.0")
 }
 ```
 
@@ -24,7 +24,7 @@ dependencies {
 <dependency>
     <groupId>com.manchickas</groupId>
     <artifactId>charcoal</artifactId>
-    <version>1.1.0</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
@@ -56,8 +56,8 @@ overloads for all of its composition methods that accept a `String` directly. Th
 let you save yourself an `apply()` call:
 
 ```java
-String result = Charcoal.color(0x708090)
-        .underline()
+String result = Charcoal.underline()
+        .foreground(0x708090)
         .bold("How convenient!"); // ESC[38;2;112;128;144;4;1mCaution!ESC[39;24;22m
 ```
 
