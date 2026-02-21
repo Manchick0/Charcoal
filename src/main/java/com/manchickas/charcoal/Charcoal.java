@@ -1,6 +1,5 @@
-package com.manchickas;
+package com.manchickas.charcoal;
 
-import com.manchickas.charcoal.Style;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Range;
@@ -9,7 +8,7 @@ import java.util.Objects;
 
 public abstract class Charcoal {
 
-    private static final boolean ENABLED_GLOBALLY = Charcoal.readEnabled();
+    private static final boolean ENABLED_GLOBALLY     = Charcoal.readFlag();
     private static final ThreadLocal<Boolean> ENABLED = ThreadLocal.withInitial(() -> Charcoal.ENABLED_GLOBALLY);
 
     private static final Style EMPTY             = new Style.Empty(null);
@@ -436,6 +435,25 @@ public abstract class Charcoal {
                 .apply(content);
     }
 
+    /// Joins together the provided [String] parts.
+    ///
+    /// Since it's common for formatting to appear within a string literal,
+    /// this method lets one concatenate styled and unstyled strings
+    /// in a readable manner.
+    ///
+    /// The following call to `join` yields `Hello, \033[93mMarie\033[39m!`:
+    /// ```java
+    /// Charcoal.join("Hello, ", Charcoal.brightYellow("Marie"), "!");
+    /// ```
+    public static @NotNull String join(@NotNull String @NotNull... parts) {
+        Objects.requireNonNull(parts);
+        var buffer = new StringBuilder();
+        for (var part : parts)
+            buffer.append(Objects.requireNonNull(part));
+        return buffer.toString();
+    }
+
+    @ApiStatus.Internal
     public static int @NotNull[] splitColor(@Range(from = 0, to = 0xFFFFFF) int color) {
         return new int[] {
                 (color >> 16) & 0xFF,
@@ -484,7 +502,7 @@ public abstract class Charcoal {
     }
 
     @ApiStatus.Internal
-    private static boolean readEnabled() {
+    private static boolean readFlag() {
         var property = System.getProperty("charcoal");
         if (property != null) {
             return switch (property.trim()) {

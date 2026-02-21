@@ -1,57 +1,55 @@
 package com.manchickas.charcoal;
 
-import com.manchickas.Charcoal;
 import org.jetbrains.annotations.*;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public abstract sealed class Style {
 
     private static final char ESCAPE = '\033';
-    public static final byte[] BOLD = new byte[] { 1, 22 };
-    public static final byte[] DIM = new byte[] { 2, 22 };
-    public static final byte[] ITALIC = new byte[] { 3, 23 };
-    public static final byte[] UNDERLINE = new byte[] { 4, 24 };
-    public static final byte[] BLINK = new byte[] { 5, 25 };
-    public static final byte[] RAPID_BLINK = new byte[] { 6, 25 };
-    public static final byte[] STRIKE_THROUGH = new byte[] { 9, 29 };
+    public static final byte[] BOLD              = new byte[] { 1,   22 };
+    public static final byte[] DIM               = new byte[] { 2,   22 };
+    public static final byte[] ITALIC            = new byte[] { 3,   23 };
+    public static final byte[] UNDERLINE         = new byte[] { 4,   24 };
+    public static final byte[] BLINK             = new byte[] { 5,   25 };
+    public static final byte[] RAPID_BLINK       = new byte[] { 6,   25 };
+    public static final byte[] STRIKE_THROUGH    = new byte[] { 9,   29 };
     // Color names as defined by https://en.wikipedia.org/wiki/ANSI_escape_code#3-bit_and_4-bit
-    public static final byte[] BLACK = new byte[] { 30, 39 };
-    public static final byte[] RED = new byte[] { 31, 39 };
-    public static final byte[] GREEN = new byte[] { 32, 39 };
-    public static final byte[] YELLOW = new byte[] { 33, 39 };
-    public static final byte[] BLUE = new byte[] { 34, 39 };
-    public static final byte[] MAGENTA = new byte[] { 35, 39 };
-    public static final byte[] CYAN = new byte[] { 36, 39 };
-    public static final byte[] WHITE = new byte[] { 37, 39 };
+    public static final byte[] BLACK             = new byte[] { 30,  39 };
+    public static final byte[] RED               = new byte[] { 31,  39 };
+    public static final byte[] GREEN             = new byte[] { 32,  39 };
+    public static final byte[] YELLOW            = new byte[] { 33,  39 };
+    public static final byte[] BLUE              = new byte[] { 34,  39 };
+    public static final byte[] MAGENTA           = new byte[] { 35,  39 };
+    public static final byte[] CYAN              = new byte[] { 36,  39 };
+    public static final byte[] WHITE             = new byte[] { 37,  39 };
     // Bright colors are technically not supported by the standard,
     // but virtually available everywhere.
-    public static final byte[] BLACK_BRIGHT = new byte[] { 90, 39 };
-    public static final byte[] RED_BRIGHT = new byte[] { 91, 39 };
-    public static final byte[] GREEN_BRIGHT = new byte[] { 92, 39 };
-    public static final byte[] YELLOW_BRIGHT = new byte[] { 93, 39 };
-    public static final byte[] BLUE_BRIGHT = new byte[] { 94, 39 };
-    public static final byte[] MAGENTA_BRIGHT = new byte[] { 95, 39 };
-    public static final byte[] CYAN_BRIGHT = new byte[] { 96, 39 };
-    public static final byte[] WHITE_BRIGHT = new byte[] { 97, 39 };
-    public static final byte[] BLACK_BG = new byte[] { 40, 49 };
-    public static final byte[] RED_BG = new byte[] { 41, 49 };
-    public static final byte[] GREEN_BG = new byte[] { 42, 49 };
-    public static final byte[] YELLOW_BG = new byte[] { 43, 49 };
-    public static final byte[] BLUE_BG = new byte[] { 44, 49 };
-    public static final byte[] MAGENTA_BG = new byte[] { 45, 49 };
-    public static final byte[] CYAN_BG = new byte[] { 46, 49 };
-    public static final byte[] WHITE_BG = new byte[] { 47, 49 };
-    public static final byte[] BLACK_BRIGHT_BG = new byte[] { 100, 49 };
-    public static final byte[] RED_BRIGHT_BG = new byte[] { 101, 49 };
-    public static final byte[] GREEN_BRIGHT_BG = new byte[] { 102, 49 };
-    public static final byte[] YELLOW_BRIGHT_BG = new byte[] { 103, 49 };
-    public static final byte[] BLUE_BRIGHT_BG = new byte[] { 104, 49 };
+    public static final byte[] BLACK_BRIGHT      = new byte[] { 90,  39 };
+    public static final byte[] RED_BRIGHT        = new byte[] { 91,  39 };
+    public static final byte[] GREEN_BRIGHT      = new byte[] { 92,  39 };
+    public static final byte[] YELLOW_BRIGHT     = new byte[] { 93,  39 };
+    public static final byte[] BLUE_BRIGHT       = new byte[] { 94,  39 };
+    public static final byte[] MAGENTA_BRIGHT    = new byte[] { 95,  39 };
+    public static final byte[] CYAN_BRIGHT       = new byte[] { 96,  39 };
+    public static final byte[] WHITE_BRIGHT      = new byte[] { 97,  39 };
+    public static final byte[] BLACK_BG          = new byte[] { 40,  49 };
+    public static final byte[] RED_BG            = new byte[] { 41,  49 };
+    public static final byte[] GREEN_BG          = new byte[] { 42,  49 };
+    public static final byte[] YELLOW_BG         = new byte[] { 43,  49 };
+    public static final byte[] BLUE_BG           = new byte[] { 44,  49 };
+    public static final byte[] MAGENTA_BG        = new byte[] { 45,  49 };
+    public static final byte[] CYAN_BG           = new byte[] { 46,  49 };
+    public static final byte[] WHITE_BG          = new byte[] { 47,  49 };
+    public static final byte[] BLACK_BRIGHT_BG   = new byte[] { 100, 49 };
+    public static final byte[] RED_BRIGHT_BG     = new byte[] { 101, 49 };
+    public static final byte[] GREEN_BRIGHT_BG   = new byte[] { 102, 49 };
+    public static final byte[] YELLOW_BRIGHT_BG  = new byte[] { 103, 49 };
+    public static final byte[] BLUE_BRIGHT_BG    = new byte[] { 104, 49 };
     public static final byte[] MAGENTA_BRIGHT_BG = new byte[] { 105, 49 };
-    public static final byte[] CYAN_BRIGHT_BG = new byte[] { 106, 49 };
-    public static final byte[] WHITE_BRIGHT_BG = new byte[] { 107, 49 };
-    public static final byte[] FOREGROUND_COLOR = new byte[] { 38, 39 };
-    public static final byte[] BACKGROUND_COLOR = new byte[] { 48, 49 };
+    public static final byte[] CYAN_BRIGHT_BG    = new byte[] { 106, 49 };
+    public static final byte[] WHITE_BRIGHT_BG   = new byte[] { 107, 49 };
 
     protected final @Nullable Style parent;
 
@@ -501,6 +499,39 @@ public abstract sealed class Style {
         return content;
     }
 
+    /// Applies the `Style` around the provided `consumer`.
+    ///
+    /// If Charcoal is enabled for the current thread, the specific SGR sequences
+    /// described by the `Style` are built and pre-/appended to the provided `build`.
+    /// In-between the sequences, the `consumer` is invoked in order to populate the builder.
+    ///
+    /// Otherwise, the `consumer` is invoked directly.
+    ///
+    /// The following call `fill` appends `\033[1;31mHello, World!\033[22;39m` to the builder:
+    /// ```java
+    /// Charcoal.bold()
+    ///         .red()
+    ///         .fill(builder, b -> b.append("Hello, World!"));
+    /// ```
+    public @NotNull StringBuilder fill(@NotNull StringBuilder builder,
+                                       @NotNull Consumer<@NotNull StringBuilder> consumer) {
+        Objects.requireNonNull(builder);
+        Objects.requireNonNull(consumer);
+        if (Charcoal.isEnabled()) {
+            builder.append(ESCAPE)
+                    .append('[');
+            this.appendBegin(builder)
+                    .append('m');
+            consumer.accept(builder);
+            builder.append(ESCAPE)
+                    .append('[');
+            return this.appendEnd(builder)
+                    .append('m');
+        }
+        consumer.accept(builder);
+        return builder;
+    }
+
     /// Builds the SGR begin sequence described by the `Style`.
     ///
     /// Note that the sequence is specifically built in the _exact order the styles were composed_.
@@ -556,7 +587,7 @@ public abstract sealed class Style {
 
     public static final class Fixed extends Style {
 
-        private byte @NotNull[] sequence;
+        private final byte @NotNull[] sequence;
 
         public Fixed(@Nullable Style parent,
                      byte @NotNull[] sequence) {
