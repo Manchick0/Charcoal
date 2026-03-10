@@ -8,7 +8,7 @@ to build a final result:
 
 ```java
 void main(String[] args) {
-    IO.println(Charcoal.brightYellow().bold("Hello, Marie!"));
+    IO.println(Charcoal.yellowBright().bold("Hello, Marie!"));
 }
 ```
 
@@ -16,7 +16,7 @@ To include Charcoal in your project, depend on it in your `build.gradle`/`pom.xm
 
 ```kts
 dependencies {
-    implementation("com.manchickas:charcoal:2.2.0")
+    implementation("com.manchickas:charcoal:3.0.0")
 }
 ```
 
@@ -24,7 +24,7 @@ dependencies {
 <dependency>
     <groupId>com.manchickas</groupId>
     <artifactId>charcoal</artifactId>
-    <version>2.2.0</version>
+    <version>3.0.0</version>
 </dependency>
 ```
 
@@ -36,7 +36,7 @@ built in a builder-like manner, and then applied to a `String` to produce a fina
 To start composing a `Style`, use the `Charcoal` entrypoint:
 
 ```java
-Style style = Charcoal.brightRed()
+Style style = Charcoal.redBright()
         .underline()
         .bold();
 ```
@@ -63,16 +63,13 @@ String result = Charcoal.underline()
 
 ## Disabling Charcoal
 
-It might be desired to disable Charcoal either partially or completely. To disable Charcoal entirely and VM-wide,
-use the `-Dcharcoal=disabled` JVM flag. Alternatively, Charcoal lets you override the flag
-selectively **per-thread**. To do so, use `Charcoal.disable()` and `Charcoal.enable()` methods.
+By default, Charcoal attempts to detect whether it's running in a terminal and decide on its state accordingly.
+You may, however, wish to override this behavior manually. The Charcoal is controlled through the `-Dcharcoal`
+JVM flag.
 
-When disabled, any call to `Style.apply(String)` will have no effect:
-
-```java
-Charcoal.disable();
-System.out.println(Charcoal.brightRed("Caution... well, not really.")); // Caution... well, not really.
-CompletableFuture.runAsync(() -> {
-    System.out.println(Charcoal.brightRed("Caution!")); // ESC[91mCaution!ESC[39m
-}).join();
-```
+| Flag       | Aliases                   | State                                                                                                             |
+|------------|---------------------------|-------------------------------------------------------------------------------------------------------------------|
+| `disabled` | `disable`, `false`, `off` | Charcoal is globally disabled. Style application becomes a no-op.                                                 |
+| `enabled`  | `enable`, `true`, `on`    | Charcoal is globally enabled. Style application always occurs.                                                    |
+| `color`    | `colors`, `sgr`           | Charcoal is only enabled for SGR sequences. More advanced style applications, such as hyperlinks, become a no-op. |
+| `default`  | `auto`                    | The default. The state of Charcoal is determined by the state of the terminal.                                    |
