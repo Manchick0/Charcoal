@@ -2,13 +2,12 @@
 
 # Charcoal 🖍
 
-Charcoal is a tiny library for working with SGR (Set Graphic Rendition) escape sequences in Java. It provides
-an intuitive chainable API for building up a `Style`, which can then be applied to a `String`
-to build a final result:
+Charcoal is a tiny library for working with SGR (Set Graphic Rendition) escape sequences (and, since `v3.0`, not only them...) in Java. It provides
+an intuitive chainable API for building up a `Style`, which can then be applied to a `CharSequence` to build a final result:
 
 ```java
 void main(String[] args) {
-    IO.println(Charcoal.yellowBright().bold("Hello, Marie!"));
+    IO.println(Charcoal.brightYellow().bold("Hello, Marie!"));
 }
 ```
 
@@ -16,7 +15,7 @@ To include Charcoal in your project, depend on it in your `build.gradle`/`pom.xm
 
 ```kts
 dependencies {
-    implementation("com.manchickas:charcoal:3.0.0")
+    implementation("com.manchickas:charcoal:4.0.0")
 }
 ```
 
@@ -24,19 +23,19 @@ dependencies {
 <dependency>
     <groupId>com.manchickas</groupId>
     <artifactId>charcoal</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.0</version>
 </dependency>
 ```
 
 ## Usage
 
 The core of Charcoal is the `Style` class, which is used to describe a specific SGR sequence programatically. It can be
-built in a builder-like manner, and then applied to a `String` to produce a final result.
+built in a builder-like manner, and then applied to a `CharSequence` to produce a final result.
 
 To start composing a `Style`, use the `Charcoal` entrypoint:
 
 ```java
-Style style = Charcoal.redBright()
+Style style = Charcoal.brightRed()
         .underline()
         .bold();
 ```
@@ -48,17 +47,17 @@ To apply a `Style` to a `String`, use the `apply(String)` method, which wraps th
 SGR escape sequences:
 
 ```java
-String result = style.apply("Caution!"); // ESC[91;4;1mCaution!ESC[39;24;22m
+String result = style.apply("Caution!"); // \ESC[91m\ESC[4m\ESC[1mCaution!\ESC[39m\ESC[24m\ESC[22m
 ```
 
 Since it's much more common for a `Style` to only ever be used once, Charcoal provides
-overloads for all of its composition methods that accept a `String` directly. These
+overloads for all of its composition methods that accept a `CharSequence` directly. These
 let you save yourself an `apply()` call:
 
 ```java
 String result = Charcoal.underline()
         .foreground(0x708090)
-        .bold("How convenient!"); // ESC[38;2;112;128;144;4;1mCaution!ESC[39;24;22m
+        .bold("How convenient!"); // \ESC[4m\ESC[38;2;112;128;144\ESC[1mCaution!\ESC[24m\ESC[39m\ESC[22m
 ```
 
 ## Disabling Charcoal

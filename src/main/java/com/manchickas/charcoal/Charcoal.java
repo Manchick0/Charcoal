@@ -1,5 +1,6 @@
 package com.manchickas.charcoal;
 
+import com.manchickas.charcoal.style.Empty;
 import com.manchickas.charcoal.style.Hyperlink;
 import com.manchickas.charcoal.style.SGR;
 import org.jetbrains.annotations.ApiStatus;
@@ -39,13 +40,21 @@ public final class Charcoal {
         throw new UnsupportedOperationException();
     }
 
+    public static @NotNull Style empty() {
+        return new Empty(null);
+    }
+
     public static @NotNull Style bold() {
         return Charcoal.BOLD;
     }
 
     public static @NotNull String bold(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.BOLD.apply(sqc);
+        return Charcoal.BOLD.wrap(sqc);
+    }
+
+    public static @NotNull String bold(char c) {
+        return Charcoal.BOLD.wrap(c);
     }
 
     public static @NotNull Style dim() {
@@ -54,7 +63,11 @@ public final class Charcoal {
 
     public static @NotNull String dim(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.DIM.apply(sqc);
+        return Charcoal.DIM.wrap(sqc);
+    }
+
+    public static @NotNull String dim(char c) {
+        return Charcoal.DIM.wrap(c);
     }
 
     public static @NotNull Style italic() {
@@ -63,7 +76,11 @@ public final class Charcoal {
 
     public static @NotNull String italic(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.ITALIC.apply(sqc);
+        return Charcoal.ITALIC.wrap(sqc);
+    }
+
+    public static @NotNull String italic(char c) {
+        return Charcoal.ITALIC.wrap(c);
     }
 
     public static @NotNull Style underline() {
@@ -72,7 +89,11 @@ public final class Charcoal {
 
     public static @NotNull String underline(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.UNDERLINE.apply(sqc);
+        return Charcoal.UNDERLINE.wrap(sqc);
+    }
+
+    public static @NotNull String underline(char c) {
+        return Charcoal.UNDERLINE.wrap(c);
     }
 
     public static @NotNull Style strikethrough() {
@@ -81,7 +102,11 @@ public final class Charcoal {
 
     public static @NotNull String strikethrough(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.STRIKETHROUGH.apply(sqc);
+        return Charcoal.STRIKETHROUGH.wrap(sqc);
+    }
+
+    public static @NotNull String strikethrough(char c) {
+        return Charcoal.STRIKETHROUGH.wrap(c);
     }
 
     public static @NotNull Style black() {
@@ -90,7 +115,11 @@ public final class Charcoal {
 
     public static @NotNull String black(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.BLACK.apply(sqc);
+        return Charcoal.BLACK.wrap(sqc);
+    }
+
+    public static @NotNull String black(char c) {
+        return Charcoal.BLACK.wrap(c);
     }
 
     public static @NotNull Style red() {
@@ -99,7 +128,11 @@ public final class Charcoal {
 
     public static @NotNull String red(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.RED.apply(sqc);
+        return Charcoal.RED.wrap(sqc);
+    }
+
+    public static @NotNull String red(char c) {
+        return Charcoal.RED.wrap(c);
     }
 
     public static @NotNull Style green() {
@@ -108,7 +141,11 @@ public final class Charcoal {
 
     public static @NotNull String green(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.GREEN.apply(sqc);
+        return Charcoal.GREEN.wrap(sqc);
+    }
+
+    public static @NotNull String green(char c) {
+        return Charcoal.GREEN.wrap(c);
     }
 
     public static @NotNull Style yellow() {
@@ -117,7 +154,11 @@ public final class Charcoal {
 
     public static @NotNull String yellow(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.YELLOW.apply(sqc);
+        return Charcoal.YELLOW.wrap(sqc);
+    }
+
+    public static @NotNull String yellow(char c) {
+        return Charcoal.YELLOW.wrap(c);
     }
 
     public static @NotNull Style blue() {
@@ -126,16 +167,24 @@ public final class Charcoal {
 
     public static @NotNull String blue(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.BLUE.apply(sqc);
+        return Charcoal.BLUE.wrap(sqc);
     }
 
-    public static @NotNull Style magenta() {
+    public static @NotNull String blue(char c) {
+        return Charcoal.BLUE.wrap(c);
+    }
+
+    public static @NotNull Style purple() {
         return Charcoal.MAGENTA;
     }
 
-    public static @NotNull String magenta(@NotNull CharSequence sqc) {
+    public static @NotNull String purple(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.MAGENTA.apply(sqc);
+        return Charcoal.MAGENTA.wrap(sqc);
+    }
+
+    public static @NotNull String purple(char c) {
+        return Charcoal.MAGENTA.wrap(c);
     }
 
     public static @NotNull Style cyan() {
@@ -144,88 +193,128 @@ public final class Charcoal {
 
     public static @NotNull String cyan(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.CYAN.apply(sqc);
+        return Charcoal.CYAN.wrap(sqc);
+    }
+
+    public static @NotNull String cyan(char c) {
+        return Charcoal.CYAN.wrap(c);
+    }
+
+    public static @NotNull Style lightGray() {
+        return Charcoal.WHITE;
+    }
+
+    public static @NotNull String lightGray(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.WHITE.wrap(sqc);
+    }
+
+    public static @NotNull String lightGray(char c) {
+        return Charcoal.WHITE.wrap(c);
+    }
+
+    public static @NotNull Style gray() {
+        return Charcoal.BLACK_BRIGHT;
+    }
+
+    public static @NotNull String gray(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.BLACK_BRIGHT.wrap(sqc);
+    }
+
+    public static @NotNull String gray(char c) {
+        return Charcoal.BLACK_BRIGHT.wrap(c);
+    }
+
+    public static @NotNull Style brightRed() {
+        return Charcoal.RED_BRIGHT;
+    }
+
+    public static @NotNull String brightRed(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.RED_BRIGHT.wrap(sqc);
+    }
+
+    public static @NotNull String brightRed(char c) {
+        return Charcoal.RED_BRIGHT.wrap(c);
+    }
+
+    public static @NotNull Style brightGreen() {
+        return Charcoal.GREEN_BRIGHT;
+    }
+
+    public static @NotNull String brightGreen(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.GREEN_BRIGHT.wrap(sqc);
+    }
+
+    public static @NotNull String brightGreen(char c) {
+        return Charcoal.GREEN_BRIGHT.wrap(c);
+    }
+
+    public static @NotNull Style brightYellow() {
+        return Charcoal.YELLOW_BRIGHT;
+    }
+
+    public static @NotNull String brightYellow(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.YELLOW_BRIGHT.wrap(sqc);
+    }
+
+    public static @NotNull String brightYellow(char c) {
+        return Charcoal.YELLOW_BRIGHT.wrap(c);
+    }
+
+    public static @NotNull Style brightBlue() {
+        return Charcoal.BLUE_BRIGHT;
+    }
+
+    public static @NotNull String brightBlue(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.BLUE_BRIGHT.wrap(sqc);
+    }
+
+    public static @NotNull String brightBlue(char c) {
+        return Charcoal.BLUE_BRIGHT.wrap(c);
+    }
+
+    public static @NotNull Style pink() {
+        return Charcoal.MAGENTA_BRIGHT;
+    }
+
+    public static @NotNull String pink(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.MAGENTA_BRIGHT.wrap(sqc);
+    }
+
+    public static @NotNull String pink(char c) {
+        return Charcoal.MAGENTA_BRIGHT.wrap(c);
+    }
+
+    public static @NotNull Style brightCyan() {
+        return Charcoal.CYAN_BRIGHT;
+    }
+
+    public static @NotNull String brightCyan(@NotNull CharSequence sqc) {
+        Objects.requireNonNull(sqc);
+        return Charcoal.CYAN_BRIGHT.wrap(sqc);
+    }
+
+    public static @NotNull String brightCyan(char c) {
+        return Charcoal.CYAN_BRIGHT.wrap(c);
     }
 
     public static @NotNull Style white() {
-        return Charcoal.WHITE;
+        return Charcoal.WHITE_BRIGHT;
     }
 
     public static @NotNull String white(@NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return Charcoal.WHITE.apply(sqc);
+        return Charcoal.WHITE_BRIGHT.wrap(sqc);
     }
 
-    public static @NotNull Style blackBright() {
-        return Charcoal.BLACK_BRIGHT;
-    }
-
-    public static @NotNull String blackBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.BLACK_BRIGHT.apply(sqc);
-    }
-
-    public static @NotNull Style redBright() {
-        return Charcoal.RED_BRIGHT;
-    }
-
-    public static @NotNull String redBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.RED_BRIGHT.apply(sqc);
-    }
-
-    public static @NotNull Style greenBright() {
-        return Charcoal.GREEN_BRIGHT;
-    }
-
-    public static @NotNull String greenBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.GREEN_BRIGHT.apply(sqc);
-    }
-
-    public static @NotNull Style yellowBright() {
-        return Charcoal.YELLOW_BRIGHT;
-    }
-
-    public static @NotNull String yellowBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.YELLOW_BRIGHT.apply(sqc);
-    }
-
-    public static @NotNull Style blueBright() {
-        return Charcoal.BLUE_BRIGHT;
-    }
-
-    public static @NotNull String blueBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.BLUE_BRIGHT.apply(sqc);
-    }
-
-    public static @NotNull Style magentaBright() {
-        return Charcoal.MAGENTA_BRIGHT;
-    }
-
-    public static @NotNull String magentaBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.MAGENTA_BRIGHT.apply(sqc);
-    }
-
-    public static @NotNull Style cyanBright() {
-        return Charcoal.CYAN_BRIGHT;
-    }
-
-    public static @NotNull String cyanBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.CYAN_BRIGHT.apply(sqc);
-    }
-
-    public static @NotNull Style whiteBright() {
-        return Charcoal.WHITE_BRIGHT;
-    }
-
-    public static @NotNull String whiteBright(@NotNull CharSequence sqc) {
-        Objects.requireNonNull(sqc);
-        return Charcoal.WHITE_BRIGHT.apply(sqc);
+    public static @NotNull String white(char c) {
+        return Charcoal.WHITE_BRIGHT.wrap(c);
     }
 
     public static @NotNull Style foreground(int color) {
@@ -234,7 +323,11 @@ public final class Charcoal {
 
     public static @NotNull String foreground(int color, @NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return SGR.FOREGROUND.apply(null, color).apply(sqc);
+        return SGR.FOREGROUND.apply(null, color).wrap(sqc);
+    }
+
+    public static @NotNull String foreground(int color, char c) {
+        return SGR.FOREGROUND.apply(null, color).wrap(c);
     }
 
     public static @NotNull Style background(int color) {
@@ -243,7 +336,11 @@ public final class Charcoal {
 
     public static @NotNull String background(int color, @NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return SGR.BACKGROUND.apply(null, color).apply(sqc);
+        return SGR.BACKGROUND.apply(null, color).wrap(sqc);
+    }
+
+    public static @NotNull String background(int color, char c) {
+        return SGR.BACKGROUND.apply(null, color).wrap(c);
     }
 
     public static @NotNull Style link(@NotNull URI reference) {
@@ -252,7 +349,11 @@ public final class Charcoal {
 
     public static @NotNull String link(@NotNull URI reference, @NotNull CharSequence sqc) {
         Objects.requireNonNull(sqc);
-        return new Hyperlink(null, reference).apply(sqc);
+        return new Hyperlink(null, reference).wrap(sqc);
+    }
+
+    public static @NotNull String link(@NotNull URI reference, char c) {
+        return new Hyperlink(null, reference).wrap(c);
     }
 
     /// Determines whether Charcoal is enabled.
@@ -289,7 +390,7 @@ public final class Charcoal {
                     || env.containsKey("TERM_PROGRAM")
                     || env.containsKey("COLORTERM");
         }
-        return true;
+        return terminal.isTerminal(); // isatty
     }
 
     @ApiStatus.Internal

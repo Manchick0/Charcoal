@@ -5,7 +5,6 @@ import com.manchickas.charcoal.Style;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.Objects;
 
@@ -20,7 +19,7 @@ public final class Hyperlink extends Style {
     }
 
     @Override
-    public <A extends Appendable> @NotNull A begin(@NotNull A buffer) throws IOException {
+    public @NotNull StringBuilder begin(@NotNull StringBuilder buffer) {
         if (this.parent != null)
             this.parent.begin(buffer);
         if (Charcoal.isEnabled(false)) {
@@ -37,7 +36,7 @@ public final class Hyperlink extends Style {
     }
 
     @Override
-    public <A extends Appendable> @NotNull A end(@NotNull A buffer) throws IOException {
+    public @NotNull StringBuilder end(@NotNull StringBuilder buffer) {
         if (Charcoal.isEnabled(false)) {
             buffer.append('\033')
                     .append(']')

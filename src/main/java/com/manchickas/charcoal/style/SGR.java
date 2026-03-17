@@ -5,7 +5,6 @@ import com.manchickas.charcoal.Style;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
 import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -38,7 +37,7 @@ public final class SGR extends Style {
     public static final @NotNull BiFunction<@Nullable Style, Integer, @NotNull SGR> FOREGROUND = (parent, color) -> new SGR(parent, SGR.colorSequence(38, color), new int[] { 39 });
     public static final @NotNull BiFunction<@Nullable Style, Integer, @NotNull SGR> BACKGROUND  = (parent, color) -> new SGR(parent, SGR.colorSequence(48, color), new int[] { 49 });
 
-    private final int @NotNull [] beginSequence;
+    private final int @NotNull[] beginSequence;
     private final int @NotNull[] endSequence;
 
     public SGR(@Nullable Style parent,
@@ -59,7 +58,7 @@ public final class SGR extends Style {
     }
 
     @Override
-    public <A extends Appendable> @NotNull A begin(@NotNull A buffer) throws IOException {
+    public @NotNull StringBuilder begin(@NotNull StringBuilder buffer) {
         if (this.parent != null)
             this.parent.begin(buffer);
         if (Charcoal.isEnabled(true)) {
@@ -69,7 +68,7 @@ public final class SGR extends Style {
                 var element = this.beginSequence[i];
                 if (i > 0)
                     buffer.append(';');
-                buffer.append(Integer.toString(element));
+                buffer.append(element);
             }
             buffer.append('m');
         }
@@ -77,7 +76,7 @@ public final class SGR extends Style {
     }
 
     @Override
-    public <A extends Appendable> @NotNull A end(@NotNull A buffer) throws IOException {
+    public @NotNull StringBuilder end(@NotNull StringBuilder buffer) {
         if (Charcoal.isEnabled(true)) {
             buffer.append('\033')
                     .append('[');
@@ -85,7 +84,7 @@ public final class SGR extends Style {
                 var element = this.endSequence[i];
                 if (i > 0)
                     buffer.append(';');
-                buffer.append(Integer.toString(element));
+                buffer.append(element);
             }
             buffer.append('m');
         }
